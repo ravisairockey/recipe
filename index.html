@@ -1,527 +1,212 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>100 Lives - A Journey Through Existence</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);
-            min-height: 100vh;
-            padding: 20px;
-            position: relative;
-            overflow-x: hidden;
-        }
-
-        /* Animated Yin-Yang Background */
-        .yin-yang-bg {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 800px;
-            height: 800px;
-            opacity: 0.03;
-            pointer-events: none;
-            z-index: 0;
-            animation: rotate 60s linear infinite;
-        }
-
-        @keyframes rotate {
-            from { transform: translate(-50%, -50%) rotate(0deg); }
-            to { transform: translate(-50%, -50%) rotate(360deg); }
-        }
-
-        .yin-yang-bg::before {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 50% 0, #fff 25%, transparent 25%),
-                        radial-gradient(circle at 50% 100%, #000 25%, transparent 25%),
-                        linear-gradient(to bottom, #fff 50%, #000 50%);
-            border-radius: 50%;
-            box-shadow: 0 0 100px rgba(255, 255, 255, 0.1);
-        }
-
-        /* Liquid Flow Animation */
-        .liquid-orb {
-            position: fixed;
-            border-radius: 50%;
-            filter: blur(40px);
-            opacity: 0.15;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .orb-1 {
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, #ffffff, transparent);
-            top: 10%;
-            left: 10%;
-            animation: float1 20s ease-in-out infinite;
-        }
-
-        .orb-2 {
-            width: 350px;
-            height: 350px;
-            background: radial-gradient(circle, #888888, transparent);
-            bottom: 10%;
-            right: 10%;
-            animation: float2 18s ease-in-out infinite;
-        }
-
-        .orb-3 {
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, #cccccc, transparent);
-            top: 50%;
-            left: 50%;
-            animation: float3 22s ease-in-out infinite;
-        }
-
-        @keyframes float1 {
-            0%, 100% { transform: translate(0, 0); }
-            33% { transform: translate(100px, -50px); }
-            66% { transform: translate(-50px, 100px); }
-        }
-
-        @keyframes float2 {
-            0%, 100% { transform: translate(0, 0); }
-            33% { transform: translate(-100px, 50px); }
-            66% { transform: translate(50px, -100px); }
-        }
-
-        @keyframes float3 {
-            0%, 100% { transform: translate(-50%, -50%); }
-            50% { transform: translate(-60%, -40%); }
-        }
-
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
-        }
-
-        header {
-            text-align: center;
-            margin-bottom: 40px;
-            padding: 30px;
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        h1 {
-            font-size: 3em;
-            background: linear-gradient(135deg, #ffffff, #888888);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 10px;
-            font-weight: 700;
-        }
-
-        .subtitle {
-            color: #aaa;
-            font-size: 1.1em;
-            font-weight: 300;
-        }
-
-        .progress-bar {
-            margin: 20px 0;
-            height: 8px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #ffffff, #888888);
-            width: 0%;
-            transition: width 0.5s ease;
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
-        }
-
-        .stats {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 20px;
-            gap: 20px;
-        }
-
-        .stat {
-            text-align: center;
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-            flex: 1;
-        }
-
-        .stat-number {
-            font-size: 2em;
-            font-weight: 700;
-            background: linear-gradient(135deg, #ffffff, #888888);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .stat-label {
-            color: #888;
-            font-size: 0.9em;
-            margin-top: 5px;
-        }
-
-        .lives-grid {
-            display: grid;
-            gap: 12px;
-            margin-top: 30px;
-        }
-
-        .life-item {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 18px 20px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .life-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 0%;
-            height: 100%;
-            background: linear-gradient(90deg, rgba(255, 255, 255, 0.1), rgba(136, 136, 136, 0.1));
-            transition: width 0.3s ease;
-            z-index: 0;
-        }
-
-        .life-item:hover {
-            transform: translateX(5px);
-            border-color: rgba(255, 255, 255, 0.3);
-            box-shadow: 0 5px 20px rgba(255, 255, 255, 0.1);
-        }
-
-        .life-item:hover::before {
-            width: 100%;
-        }
-
-        .life-item.checked {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: rgba(255, 255, 255, 0.2);
-        }
-
-        .life-item.checked .life-text {
-            color: #666;
-            text-decoration: line-through;
-        }
-
-        .checkbox {
-            width: 24px;
-            height: 24px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            transition: all 0.3s ease;
-            position: relative;
-            z-index: 1;
-        }
-
-        .life-item.checked .checkbox {
-            background: linear-gradient(135deg, #ffffff, #888888);
-            border-color: #ffffff;
-        }
-
-        .checkbox::after {
-            content: '✓';
-            color: #000;
-            font-size: 16px;
-            font-weight: 700;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .life-item.checked .checkbox::after {
-            opacity: 1;
-        }
-
-        .life-text {
-            flex: 1;
-            color: #ddd;
-            font-size: 1.05em;
-            line-height: 1.4;
-            position: relative;
-            z-index: 1;
-            transition: all 0.3s ease;
-        }
-
-        .life-number {
-            color: #666;
-            font-size: 0.85em;
-            font-weight: 600;
-            min-width: 30px;
-            text-align: right;
-            position: relative;
-            z-index: 1;
-        }
-
-        .reset-btn {
-            margin-top: 30px;
-            padding: 15px 40px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #ddd;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 1em;
-            transition: all 0.3s ease;
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .reset-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.4);
-            box-shadow: 0 5px 20px rgba(255, 255, 255, 0.2);
-        }
-
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2em;
-            }
-
-            .stats {
-                flex-direction: column;
-            }
-
-            .life-item {
-                padding: 15px;
-            }
-
-            .life-text {
-                font-size: 0.95em;
-            }
-        }
-    </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>One Life Index</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    color: #e0e0e0;
+    margin: 0;
+    padding: 20px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  h1 {
+    text-align: center;
+    margin-bottom: 40px;
+    font-weight: 900;
+    font-size: 2.5rem;
+  }
+  ul {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 0;
+    list-style: none;
+    border-radius: 30px;
+    background: linear-gradient(135deg, #193256, #28405c);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+    position: relative;
+  }
+  li {
+    padding: 16px 24px;
+    border-bottom: 1px solid #3a4c6b;
+    position: relative;
+    cursor: pointer;
+    font-size: 1.15rem;
+    transition: background 0.3s ease;
+  }
+  li:last-child {
+    border-bottom: none;
+  }
+  li:hover {
+    background: #335d81;
+  }
+  li input[type='checkbox'] {
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    accent-color: #8ee3ef;
+  }
+  li.checked {
+    background: linear-gradient(135deg, #83a4d4, #b6fbff);
+    color: #1d3557;
+    text-decoration: line-through;
+  }
+  /* Ying Yang liquid flow background effect around ul container */
+  ul::before, ul::after {
+    content: "";
+    position: absolute;
+    width: 50vmin;
+    height: 50vmin;
+    border-radius: 50%;
+    filter: blur(100px);
+    z-index: -1;
+  }
+  ul::before {
+    background: radial-gradient(circle at center, #8ee3ef, transparent 70%);
+    top: -15vmin;
+    left: -25vmin;
+  }
+  ul::after {
+    background: radial-gradient(circle at center, #1e3c72, transparent 70%);
+    bottom: -15vmin;
+    right: -25vmin;
+  }
+</style>
 </head>
 <body>
-    <div class="yin-yang-bg"></div>
-    <div class="liquid-orb orb-1"></div>
-    <div class="liquid-orb orb-2"></div>
-    <div class="liquid-orb orb-3"></div>
+<h1>One Life Index</h1>
+<ul id="life-list">
+</ul>
+<script>
+const items = [
+"One life of pleasure – experiencing luxury, love, and joy.",
+"One life of pain – enduring hardship, suffering, and challenges.",
+"One life of power – living as a leader or someone in a position of authority.",
+"One life of poverty – struggling with scarcity and adversity.",
+"One life of wisdom – becoming a philosopher, teacher, or sage.",
+"One life of ignorance – living in a state of confusion or naiveté.",
+"One life of creativity – becoming an artist, musician, or writer.",
+"One life of servitude – living as a servant or in a lower social class.",
+"One life of rebellion – challenging societal norms and authority.",
+"One life of submission – following rules without question.",
+"One life of love – experiencing deep and unconditional love.",
+"One life of loneliness – living in solitude and isolation.",
+"One life of adventure – traveling, exploring, and taking risks.",
+"One life of stability – living a steady, predictable life.",
+"One life of fame – being recognized and admired by many.",
+"One life of obscurity – living unnoticed by the world.",
+"One life of health – enjoying physical vitality and strength.",
+"One life of illness – struggling with chronic disease or physical limitations.",
+"One life of conflict – being in constant struggle or war.",
+"One life of peace – living in tranquility and calmness.",
+"One life of leadership – guiding others and making significant decisions.",
+"One life of guidance – being mentored or guided by others.",
+"One life of ambition – striving for personal success and achievement.",
+"One life of contentment – living simply, without excessive desire.",
+"One life of betrayal – experiencing deep personal betrayal or loss.",
+"One life of forgiveness – practicing compassion and understanding.",
+"One life of guilt – burdened by past actions or regrets.",
+"One life of redemption – seeking forgiveness and personal growth.",
+"One life of exploration – discovering new ideas, places, or philosophies.",
+"One life of simplicity – living a minimalist and uncomplicated life.",
+"One life of excess – indulging in abundance without restraint.",
+"One life of artistic creation – crafting masterpieces in art, music, or literature.",
+"One life of mechanical work – living a life of routine labor and craftsmanship.",
+"One life of spiritual awakening – achieving enlightenment or profound spiritual understanding.",
+"One life of materialism – valuing possessions and wealth above all.",
+"One life of misfortune – experiencing one bad break after another.",
+"One life of luck – being blessed with good fortune and serendipity.",
+"One life of family – focusing on raising a family and nurturing relationships.",
+"One life of solitude – choosing to live alone without social ties.",
+"One life of sacrifice – giving up personal desires for a greater cause.",
+"One life of indulgence – living in excess without concern for consequences.",
+"One life of gratitude – always appreciating what life gives.",
+"One life of bitterness – holding grudges and dwelling on the negative.",
+"One life of charity – giving selflessly to those in need.",
+"One life of self-interest – focusing primarily on personal gain.",
+"One life of honor – living with a strong sense of duty and integrity.",
+"One life of shame – feeling dishonored or undeserving.",
+"One life of education – dedicated to learning and self-improvement.",
+"One life of ignorance – unaware or uninterested in growth or knowledge.",
+"One life of beauty – experiencing physical beauty, either through appearance or surroundings.",
+"One life of ugliness – facing societal rejection due to appearance or deformity.",
+"One life of tragedy – enduring immense personal loss or suffering.",
+"One life of joy – embracing happiness and fulfillment.",
+"One life of simplicity – living simply and with modest means.",
+"One life of competition – always striving to be the best.",
+"One life of mediocrity – living without striving for excellence.",
+"One life of spirituality – dedicating life to a higher power or cause.",
+"One life of doubt – questioning everything and seeking deeper truths.",
+"One life of passion – living with intense love or desire for something.",
+"One life of indifference – being unaffected by anything around you.",
+"One life of peace – living in a state of inner and outer calm.",
+"One life of war – living through conflict and violence.",
+"One life of trust – having faith in others and the world.",
+"One life of suspicion – living with distrust and wariness of others.",
+"One life of enlightenment – attaining deep, transcendent understanding.",
+"One life of self-discovery – continuously searching for one’s true self.",
+"One life of fear – constantly living in dread or anxiety.",
+"One life of courage – overcoming fear to act boldly.",
+"One life of responsibility – carrying heavy burdens or obligations.",
+"One life of freedom – living without constraints or restrictions.",
+"One life of doubt – uncertain about existence, purpose, or truth.",
+"One life of serenity – existing with a calm, peaceful demeanor.",
+"One life of grief – experiencing profound sorrow and loss.",
+"One life of joy – living in constant happiness and positive emotion.",
+"One life of innovation – leading in technology, business, or thought.",
+"One life of conservation – dedicating oneself to protecting the environment.",
+"One life of fame – living under constant public scrutiny.",
+"One life of obscurity – working behind the scenes, unnoticed.",
+"One life of the underdog – fighting against great odds to succeed.",
+"One life of privilege – benefiting from wealth or status without effort.",
+"One life of determination – never giving up, no matter the obstacles.",
+"One life of laziness – avoiding work, responsibility, or effort.",
+"One life of hospitality – dedicating life to making others feel welcome.",
+"One life of isolation – intentionally separating oneself from others.",
+"One life of luxury – living in the highest level of comfort and style.",
+"One life of servitude – living humbly to serve others.",
+"One life of tragedy – enduring loss and suffering.",
+"One life of vengeance – seeking retribution for past wrongs.",
+"One life of healing – working as a healer or offering comfort to others.",
+"One life of solitude – living in complete isolation for personal reflection.",
+"One life of fortune – experiencing great wealth and good luck.",
+"One life of bad luck – facing constant setbacks and challenges.",
+"One life of clarity – seeing the world clearly and with deep understanding.",
+"One life of confusion – struggling to understand one’s place in the world.",
+"One life of hypocrisy – preaching one thing and doing another.",
+"One life of sincerity – living truthfully and authentically.",
+"One life of kindness – offering compassion and empathy to all.",
+"One life of cruelty – causing harm to others without remorse.",
+"One life of harmony – existing peacefully with the world and others.",
+"One life of discord – living in conflict with everyone and everything."
+];
 
-    <div class="container">
-        <header>
-            <h1>100 Lives</h1>
-            <p class="subtitle">A Journey Through Every Facet of Existence</p>
-            
-            <div class="progress-bar">
-                <div class="progress-fill" id="progressFill"></div>
-            </div>
-            
-            <div class="stats">
-                <div class="stat">
-                    <div class="stat-number" id="completedCount">0</div>
-                    <div class="stat-label">Completed</div>
-                </div>
-                <div class="stat">
-                    <div class="stat-number" id="remainingCount">100</div>
-                    <div class="stat-label">Remaining</div>
-                </div>
-                <div class="stat">
-                    <div class="stat-number" id="progressPercent">0%</div>
-                    <div class="stat-label">Progress</div>
-                </div>
-            </div>
-        </header>
+const ul = document.getElementById('life-list');
 
-        <div class="lives-grid" id="livesGrid"></div>
+items.forEach((item, index) => {
+  const li = document.createElement('li');
+  const checkbox = document.createElement('input');
+  checkbox.type = 'checkbox';
+  checkbox.id = `check-${index}`;
 
-        <button class="reset-btn" onclick="resetAll()">Reset All</button>
-    </div>
+  checkbox.addEventListener('change', () => {
+    li.classList.toggle('checked', checkbox.checked);
+  });
 
-    <script>
-        const lives = [
-            "One life of pleasure – experiencing luxury, love, and joy.",
-            "One life of pain – enduring hardship, suffering, and challenges.",
-            "One life of power – living as a leader or someone in a position of authority.",
-            "One life of poverty – struggling with scarcity and adversity.",
-            "One life of wisdom – becoming a philosopher, teacher, or sage.",
-            "One life of ignorance – living in a state of confusion or naiveté.",
-            "One life of creativity – becoming an artist, musician, or writer.",
-            "One life of servitude – living as a servant or in a lower social class.",
-            "One life of rebellion – challenging societal norms and authority.",
-            "One life of submission – following rules without question.",
-            "One life of love – experiencing deep and unconditional love.",
-            "One life of loneliness – living in solitude and isolation.",
-            "One life of adventure – traveling, exploring, and taking risks.",
-            "One life of stability – living a steady, predictable life.",
-            "One life of fame – being recognized and admired by many.",
-            "One life of obscurity – living unnoticed by the world.",
-            "One life of health – enjoying physical vitality and strength.",
-            "One life of illness – struggling with chronic disease or physical limitations.",
-            "One life of conflict – being in constant struggle or war.",
-            "One life of peace – living in tranquility and calmness.",
-            "One life of leadership – guiding others and making significant decisions.",
-            "One life of guidance – being mentored or guided by others.",
-            "One life of ambition – striving for personal success and achievement.",
-            "One life of contentment – living simply, without excessive desire.",
-            "One life of betrayal – experiencing deep personal betrayal or loss.",
-            "One life of forgiveness – practicing compassion and understanding.",
-            "One life of guilt – burdened by past actions or regrets.",
-            "One life of redemption – seeking forgiveness and personal growth.",
-            "One life of exploration – discovering new ideas, places, or philosophies.",
-            "One life of simplicity – living a minimalist and uncomplicated life.",
-            "One life of excess – indulging in abundance without restraint.",
-            "One life of artistic creation – crafting masterpieces in art, music, or literature.",
-            "One life of mechanical work – living a life of routine labor and craftsmanship.",
-            "One life of spiritual awakening – achieving enlightenment or profound spiritual understanding.",
-            "One life of materialism – valuing possessions and wealth above all.",
-            "One life of misfortune – experiencing one bad break after another.",
-            "One life of luck – being blessed with good fortune and serendipity.",
-            "One life of family – focusing on raising a family and nurturing relationships.",
-            "One life of solitude – choosing to live alone without social ties.",
-            "One life of sacrifice – giving up personal desires for a greater cause.",
-            "One life of indulgence – living in excess without concern for consequences.",
-            "One life of gratitude – always appreciating what life gives.",
-            "One life of bitterness – holding grudges and dwelling on the negative.",
-            "One life of charity – giving selflessly to those in need.",
-            "One life of self-interest – focusing primarily on personal gain.",
-            "One life of honor – living with a strong sense of duty and integrity.",
-            "One life of shame – feeling dishonored or undeserving.",
-            "One life of education – dedicated to learning and self-improvement.",
-            "One life of ignorance – unaware or uninterested in growth or knowledge.",
-            "One life of beauty – experiencing physical beauty, either through appearance or surroundings.",
-            "One life of ugliness – facing societal rejection due to appearance or deformity.",
-            "One life of tragedy – enduring immense personal loss or suffering.",
-            "One life of joy – embracing happiness and fulfillment.",
-            "One life of simplicity – living simply and with modest means.",
-            "One life of competition – always striving to be the best.",
-            "One life of mediocrity – living without striving for excellence.",
-            "One life of spirituality – dedicating life to a higher power or cause.",
-            "One life of doubt – questioning everything and seeking deeper truths.",
-            "One life of passion – living with intense love or desire for something.",
-            "One life of indifference – being unaffected by anything around you.",
-            "One life of peace – living in a state of inner and outer calm.",
-            "One life of war – living through conflict and violence.",
-            "One life of trust – having faith in others and the world.",
-            "One life of suspicion – living with distrust and wariness of others.",
-            "One life of enlightenment – attaining deep, transcendent understanding.",
-            "One life of self-discovery – continuously searching for one's true self.",
-            "One life of fear – constantly living in dread or anxiety.",
-            "One life of courage – overcoming fear to act boldly.",
-            "One life of responsibility – carrying heavy burdens or obligations.",
-            "One life of freedom – living without constraints or restrictions.",
-            "One life of doubt – uncertain about existence, purpose, or truth.",
-            "One life of serenity – existing with a calm, peaceful demeanor.",
-            "One life of grief – experiencing profound sorrow and loss.",
-            "One life of joy – living in constant happiness and positive emotion.",
-            "One life of innovation – leading in technology, business, or thought.",
-            "One life of conservation – dedicating oneself to protecting the environment.",
-            "One life of fame – living under constant public scrutiny.",
-            "One life of obscurity – working behind the scenes, unnoticed.",
-            "One life of the underdog – fighting against great odds to succeed.",
-            "One life of privilege – benefiting from wealth or status without effort.",
-            "One life of determination – never giving up, no matter the obstacles.",
-            "One life of laziness – avoiding work, responsibility, or effort.",
-            "One life of hospitality – dedicating life to making others feel welcome.",
-            "One life of isolation – intentionally separating oneself from others.",
-            "One life of luxury – living in the highest level of comfort and style.",
-            "One life of servitude – living humbly to serve others.",
-            "One life of tragedy – enduring loss and suffering.",
-            "One life of vengeance – seeking retribution for past wrongs.",
-            "One life of healing – working as a healer or offering comfort to others.",
-            "One life of solitude – living in complete isolation for personal reflection.",
-            "One life of fortune – experiencing great wealth and good luck.",
-            "One life of bad luck – facing constant setbacks and challenges.",
-            "One life of clarity – seeing the world clearly and with deep understanding.",
-            "One life of confusion – struggling to understand one's place in the world.",
-            "One life of hypocrisy – preaching one thing and doing another.",
-            "One life of sincerity – living truthfully and authentically.",
-            "One life of kindness – offering compassion and empathy to all.",
-            "One life of cruelty – causing harm to others without remorse.",
-            "One life of harmony – existing peacefully with the world and others.",
-            "One life of discord – living in conflict with everyone and everything."
-        ];
-
-        let checkedLives = new Set(JSON.parse(localStorage.getItem('checkedLives') || '[]'));
-
-        function renderLives() {
-            const grid = document.getElementById('livesGrid');
-            grid.innerHTML = '';
-            
-            lives.forEach((life, index) => {
-                const item = document.createElement('div');
-                item.className = 'life-item' + (checkedLives.has(index) ? ' checked' : '');
-                item.onclick = () => toggleLife(index);
-                
-                item.innerHTML = `
-                    <div class="checkbox"></div>
-                    <div class="life-text">${life}</div>
-                    <div class="life-number">${index + 1}</div>
-                `;
-                
-                grid.appendChild(item);
-            });
-            
-            updateStats();
-        }
-
-        function toggleLife(index) {
-            if (checkedLives.has(index)) {
-                checkedLives.delete(index);
-            } else {
-                checkedLives.add(index);
-            }
-            localStorage.setItem('checkedLives', JSON.stringify([...checkedLives]));
-            renderLives();
-        }
-
-        function updateStats() {
-            const completed = checkedLives.size;
-            const remaining = lives.length - completed;
-            const percent = Math.round((completed / lives.length) * 100);
-            
-            document.getElementById('completedCount').textContent = completed;
-            document.getElementById('remainingCount').textContent = remaining;
-            document.getElementById('progressPercent').textContent = percent + '%';
-            document.getElementById('progressFill').style.width = percent + '%';
-        }
-
-        function resetAll() {
-            if (confirm('Are you sure you want to reset all lives? This cannot be undone.')) {
-                checkedLives.clear();
-                localStorage.removeItem('checkedLives');
-                renderLives();
-            }
-        }
-
-        renderLives();
-    </script>
+  li.appendChild(checkbox);
+  const span = document.createElement('span');
+  span.textContent = item;
+  li.appendChild(span);
+  ul.appendChild(li);
+});
+</script>
 </body>
 </html>
